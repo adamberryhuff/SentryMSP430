@@ -1,16 +1,9 @@
-/********************************************************************
-* Motor.c - H-Bridge controller. Digitally control the polarities of 
-*           a DC motor up to 24 volts.
-*
-* 05/15/2013 Adam Berry
-*********************************************************************/
- 
 ////////////////////////////////////////////////////////////////////
 // HEADER FILES - Master & Motor module headers.                  //
 ////////////////////////////////////////////////////////////////////
 #include "includes.h"
 #include "Motor.h"
- 
+
 ////////////////////////////////////////////////////////////////////
 // FUNCTION PROTOTYPES - Motor Module function prototypes.        //
 ////////////////////////////////////////////////////////////////////
@@ -18,7 +11,7 @@ void MotorInit(void);
 INT8U MotorEnable2s(void);
 void MotorOut(void);
 void MotorIn(void);
- 
+
 ////////////////////////////////////////////////////////////////////
 // MODULE VARIABLES - Motor Module Variables.                     //
 ////////////////////////////////////////////////////////////////////
@@ -28,7 +21,7 @@ typedef enum {
     PULL
 } MOTOR_STATE;
 MOTOR_STATE MotorState = PULL;
- 
+
 ////////////////////////////////////////////////////////////////////
 // MotorInit  - Initializes motor timer & set to in state         //
 // Parameters - None                                              //
@@ -38,18 +31,18 @@ void MotorInit(void)
 {
     // Set as output for IN1, IN2, EN on H-Bridge
     P2DIR |= 0x23;
- 
+
     // Initialize Timer A.
     BCSCTL3 = LFXT1S1;                        //Select VLOCLK for ACLCK (i.e. 12khz intosc)
     TACCTL0 = OUTMOD_2 + CCIE;                // TACCR0 interrupt enabled
- 
+
     // This returns motor to unlocked state on init
     MOTOR_UNLOCK;
     MOTOR_ENABLE;
     TACCR0 = TACCR0_INIT;
     TACTL = TASSEL_1 + ID1 + ID0 + MC_1;    // ACLCK, 1/40 DIVIDER, upmode to TCCR0 value
 }
- 
+
 ////////////////////////////////////////////////////////////////////
 // MotorEnable2s - Initializes motor timer & set to in state      //
 // Parameters    - None                                           //
@@ -70,10 +63,10 @@ INT8U MotorEnable2s(void)
         TACCR0 += 20;
     }
     TACTL = TASSEL_1 + ID1 + ID0 + MC_1;    // ACLCK, 1/40 DIVIDER, upmode to TCCR0 value
- 
+
     return TRUE;
 }
- 
+
 ////////////////////////////////////////////////////////////////////
 // MotorIn    - Puts the motor to the in state                    //
 // Parameters - None                                              //
@@ -86,7 +79,7 @@ void MotorIn(void)
         MotorState = PULL;
     }
 }
- 
+
 ////////////////////////////////////////////////////////////////////
 // MotorOut   - Puts the motor to the out state                   //
 // Parameters - None                                              //
@@ -99,7 +92,7 @@ void MotorOut(void)
         MotorState = PUSH;
     }
 }
- 
+
 ////////////////////////////////////////////////////////////////////
 // Timer_A    - Disables the motor when timer hits                //
 // Parameters - None                                              //

@@ -1,0 +1,1 @@
+"./mss/mss_timer.obj" "./mss/mss_sema.obj" "./mss/mss_mque.obj" "./mss/mss_mem.obj" "./mss/mss_hal.obj" "./mss/mss_event.obj" "./mss/mss.obj" "./mss/llist.obj" "./main.obj" "./UART.obj" "./Motor.obj" -l"libc.a" "../lnk_msp430g2553.cmd" 
